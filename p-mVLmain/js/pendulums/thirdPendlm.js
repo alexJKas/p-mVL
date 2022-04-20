@@ -1,4 +1,6 @@
 import dataObj from "../data.js";
+import Bob from "./components/Bob.js"
+
 
 const {canvas, ctx, canvasArea,animCross} = dataObj
 const thrdPend = () => {
@@ -6,9 +8,10 @@ const thrdPend = () => {
     theThirdPend.addEventListener("click", function () {
     canvasArea.style.display = "block";
     animCross[2] = true;
+
     //------------------
-    let BobX = 150;
-    let BobY = 400;
+    let X = 150;
+    let Y = 400;
     let velBobX = 0;
     let velBobY = 0;
     let accBobX = 0;
@@ -24,7 +27,9 @@ const thrdPend = () => {
     const r = 40;
     const damp = 0.996;
     const g = 9.81;
-    //===================
+    const bob = new Bob(r,m);
+    //=================
+
     // const spring = function (dot_x, dot_y, N, l) {
     //   let x1 = dot_x;
     //   let y1 = dot_y;
@@ -64,15 +69,9 @@ const thrdPend = () => {
         ctx.fillStyle = "#000";
         ctx.fill();
         ctx.moveTo(AnchorX, AnchorY);
-        ctx.lineTo(BobX, BobY);
+        ctx.lineTo(X, Y);
         ctx.stroke();
-        // spring(AnchorX, AnchorY, 20, BobY);
-        ctx.beginPath();
-        //ctx.moveTo(BobX, BobY - r);
-        ctx.arc(BobX, BobY, r, -Math.PI / 2, 2 * Math.PI + Math.PI / 2, false);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.stroke();
+
     };
     //===========
     const animate = function () {
