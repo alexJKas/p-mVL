@@ -12,11 +12,15 @@ const generalFunc= () => {
     console.log(animCross);
     
     canvasArea.style.display = "none";
+
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight + 143;
     
     closeCross.addEventListener("click", function () {
       canvasArea.style.display = "none";
+      const settingWind = document.querySelector('.setingsWindowPend1');
+      settingWind.style.display='none';
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       animCross = animCross.fill(false, 0);
     });

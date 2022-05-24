@@ -23,9 +23,9 @@ const secPend = () => {
     let a2V = 0;
     let a1A = 0;
     let a2A = 0;
-    const g = 0.8;
-    const damp1 = 0.996;
-    const damp2 = 0.996;
+    const g = 1;
+    const damp1 = 0.999;
+    const damp2 = 0.999;
     let pressing;
     let color1 = "red";
     let color2 = "red";

@@ -10,6 +10,9 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200&display=swap" rel="stylesheet">
     <title>Document</title>
   </head>
   <body>
@@ -30,6 +33,41 @@
       <h1>p-mVL</h1>
       <div class="cv-area">
         <i class="close"></i>
+        <div class="setingsWindowPend1">
+          <div class="timeWindow">00:00:00</div>
+          <div class="resultL" style="color: #57738f;"></div>
+          <div>
+          <input type="range" min="100" max="540" value="200" id="lengthRange">
+          <label for="lengthRange">Length</label>
+          </div>
+          <div>
+          <input type="range"  min="1" max="13"  value="2" id="gravityRange">
+          <label for="gravityRange">Gravity</label>
+          </div>
+          <button class="stopBtn">STOP</button>        
+        </div>
+
+
+
+
+        <div class="setingsWindowPend3">
+          <div class="timeWindow">00:00:00</div>
+          <div>
+           <form oninput="result.value=parseInt(l.value/37.7952755906)">
+          <div>
+            <output name="result" for="lengthRange" id="lengthRangOut" style="color: #57738f;"></output>
+            <span style="color: #57738f;">cm</span>
+          </div>
+          <input type="range" name="l" min="100" max="540" value="200" id="lengthRange">
+          <label for="lengthRange">Length</label>
+          </div>
+        </form>
+          <div>
+          <input type="range" min="1" max="20"  value="2" id="gravityRange">
+          <label for="gravityRange">Gravity</label>
+          </div>
+          <button class="stopBtn">STOP</button>        
+        </div>
         <canvas class="cv"></canvas>
       </div>
     </div>
