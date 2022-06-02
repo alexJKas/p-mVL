@@ -33,9 +33,9 @@
       <h1>p-mVL</h1>
       <div class="cv-area">
         <i class="close"></i>
-        <div class="setingsWindowPend1">
-          <div class="timeWindow">00:00:00</div>
-          <div class="resultL" style="color: #57738f;"></div>
+        <div class="pendlm1 setingsWindow">
+          <div class="timeWindow time1">00:00:00</div>
+          <div class="resultL" style="color: #57738f; padding-right: 150px;"></div>
           <div>
           <input type="range" min="100" max="540" value="200" id="lengthRange">
           <label for="lengthRange">Length</label>
@@ -44,30 +44,52 @@
           <input type="range"  min="1" max="13"  value="2" id="gravityRange">
           <label for="gravityRange">Gravity</label>
           </div>
-          <button class="stopBtn">STOP</button>        
+          <button class="stopBtn btn1">STOP</button>        
+        </div>
+
+        <div class="pendlm2 setingsWindow">
+          <div class="resultL1" style="color: #57738f;"></div>
+          <div>
+          <input type="range" min="100" max="540" value="200" id="lengthRange1">
+          <label for="lengthRange1">L1</label>
+          </div>
+          <div class="resultL2" style="color: #57738f;"></div>
+          <div>
+          <input type="range"  min="100" max="540"  value="200" id="lengthRange2">
+          <label for="lengthRange2">L2</label>
+          </div>    
+
+          <div class="resultM1" style="color: #57738f;"></div>
+          <div>
+          <input type="range" min="10" max="40" value="15" id="massRange1">
+          <label for="massRange1">m1</label>
+          </div>
+          <div class="resultM2" style="color: #57738f;"></div>
+          <div>
+          <input type="range"  min="10" max="40"  value="15" id="massRange2">
+          <label for="massRange2">m2</label>
+          </div>    
+
+        </div>
+
+        <div class="pendlm3 setingsWindow">
+          <div class="timeWindow time2">00:00:00</div>
+          <div class="resultM" style="color: #57738f; padding-right: 150px;"></div>
+          <div>
+          <input type="range" min="1" max="20" value="1" id="massRange">
+          <label style="padding-right: 20px;" for="massRange">mass</label>
+          </div>
+          <div>
+          <input type="range"  min="1" max="10"  value="4" id="stiffnessRange">
+          <label for="stiffnessRange">Stiffness</label>
+          </div>
+          <button class="stopBtn btn2">STOP</button>        
         </div>
 
 
 
 
-        <div class="setingsWindowPend3">
-          <div class="timeWindow">00:00:00</div>
-          <div>
-           <form oninput="result.value=parseInt(l.value/37.7952755906)">
-          <div>
-            <output name="result" for="lengthRange" id="lengthRangOut" style="color: #57738f;"></output>
-            <span style="color: #57738f;">cm</span>
-          </div>
-          <input type="range" name="l" min="100" max="540" value="200" id="lengthRange">
-          <label for="lengthRange">Length</label>
-          </div>
-        </form>
-          <div>
-          <input type="range" min="1" max="20"  value="2" id="gravityRange">
-          <label for="gravityRange">Gravity</label>
-          </div>
-          <button class="stopBtn">STOP</button>        
-        </div>
+
         <canvas class="cv"></canvas>
       </div>
     </div>

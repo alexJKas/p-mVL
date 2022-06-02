@@ -12,7 +12,11 @@
     canvasArea: document.querySelector(".cv-area"),
     activeArrow: document.querySelector('.arrow'),
     closeCross: document.querySelector(".close"),
-    animCross: [true, true, true]
+    animCross: [true, true, true],
+    centerCanvas : {
+      x: window.innerWidth/2,
+      y: window.innerHeight/2
+    }
  }
  
 export default dataObj;

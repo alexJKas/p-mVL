@@ -4,19 +4,19 @@ import fixedPoint from "./components/fixedPoint.js";
 import Bob from "./components/Bob.js";
 import Rod from "./components/Rod.js";
 
-const {canvas, ctx, canvasArea,animCross} = dataObj
+const {canvas, ctx, canvasArea,animCross,centerCanvas} = dataObj
 let StopBtnUnactive = true;
 const simplePend = () =>{
     const firstPend = document.querySelector(".first-pendulum");
     firstPend.addEventListener("click", function () {
       canvasArea.style.display = "block";
-      const settingWind = document.querySelector('.setingsWindowPend1');
+      const settingWind = document.querySelector('.pendlm1');
       settingWind.style.display='flex';
       animCross[0] = true;
-      const timeWind = document.querySelector('.timeWindow');
+      const timeWind = document.querySelector('.time1');
       const lengthRange=document.getElementById('lengthRange');
       const gravityRange=document.getElementById('gravityRange');
-      const stopBtn = document.querySelector('.stopBtn');
+      const stopBtn = document.querySelector('.btn1');
       const resultL =document.querySelector('.resultL');
       const resultG = document.querySelector('.resultG');      //----------------------
       let ang = 0; //Кут
@@ -24,16 +24,13 @@ const simplePend = () =>{
       let ms =0;
       let sec =0;
       let min=0;
-      const r = 30; //Радіус кола
+      const r = 40; //Радіус кола
       let aVel = 0; //Кутова швидкість
       let aAcc; //Кутове прискорення
       let gravity = gravityRange.value; //Прискорення вільного падіння
       const damp = 1; //Коефіцієнт затухання
       let pressing;
-      const centerCanvas = {
-        x:canvas.width/2,
-        y:canvas.height/2 -330
-      }
+      
       resultL.textContent=`${Math.round(lengthRange.value*0.02645833)} cm`;
       lengthRange.addEventListener('input',(e)=>{
         len=e.target.value
@@ -65,10 +62,10 @@ const simplePend = () =>{
           StopBtnUnactive = true;
         }
       })
-      const ancor = new fixedPoint(centerCanvas.x,centerCanvas.y);
+      const ancor = new fixedPoint(centerCanvas.x,centerCanvas.y-300);
       const rod= new Rod(ancor.x,ancor.y,len,ang);
       console.log(rod.x,rod.y)
-      const bob = new Bob(r,40);
+      const bob = new Bob();
 
       const calculate =(initial,len,triangFunc) =>{
        
@@ -105,7 +102,7 @@ const simplePend = () =>{
 
         ancor.draw(ctx);
         rod.draw(ctx);
-        bob.draw(ctx);
+        bob.draw(ctx,r);
       };
       const animate = function () {
         if (!pressing && animCross[0] && StopBtnUnactive) {

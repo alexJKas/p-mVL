@@ -1,14 +1,26 @@
 import dataObj from "../data.js";
+import SpringCoil from "./components/springCoil.js";
+import Bob from "./components/Bob.js";
 
-const {canvas, ctx, canvasArea,animCross} = dataObj
+const {canvas, ctx, canvasArea,animCross,centerCanvas} = dataObj
+let StopBtnUnactive = true;
 const thrdPend = () => {
     const theThirdPend = document.querySelector(".third-pendulum");
     theThirdPend.addEventListener("click", function () {
     canvasArea.style.display = "block";
+    const settingWind = document.querySelector('.pendlm3');
+    settingWind.style.display='flex';
     animCross[2] = true;
+    const timeWind = document.querySelector('.time2');
+    const massRange=document.getElementById('massRange');
+    const stiffnessRange=document.getElementById('stiffnessRange');
+    const stopBtn = document.querySelector('.btn2');
+    const resultM =document.querySelector('.resultM');
+
     //------------------
-    let BobX = 150;
-    let BobY = 400;
+    const restLenSpr = 200;
+    let BobX = centerCanvas.x+restLenSpr;
+    let BobY = centerCanvas.y;
     let velBobX = 0;
     let velBobY = 0;
     let accBobX = 0;
@@ -16,88 +28,118 @@ const thrdPend = () => {
     let l, x, sinAng, cosAng, ang;
     let pressing;
     let color = "red";
-    const AnchorX = 150;
-    const AnchorY = 150;
-    const restLenSpr = 250;
-    const k = 0.1;
-    const m = 1;
+    const AnchorX = centerCanvas.x;
+    const AnchorY = centerCanvas.y;
+    let k = 0.04;
+    let m = 1;
     const r = 40;
-    const damp = 0.996;
-    const g = 9.81;
+    const damp = 1;
+    let ms =0;
+    let sec =0;
+    let min=0;
     //===================
-    // const spring = function (dot_x, dot_y, N, l) {
-    //   let x1 = dot_x;
-    //   let y1 = dot_y;
-    //   let i = -1;
-    //   let delty = (i * x1) / N;
-    //   let deltx = 30;
-    //   let dy = l / N;
-    //   let dx;
-    //   if (l > 0) {
-    //     let vidx = (l * x1) / y1;
-    //     let Nx = (i * x1) / deltx;
-    //     dx = vidx / Nx;
-    //   } else {
-    //     dx = 0;
-    //   }
-    //   const eq = 15;
-    //   while (y1 < eq + l) {
-    //     dx = -dx;
-    //     let x2 = x1 + deltx;
-    //     let y2 = y1 + delty;
-    //     ctx.beginPath();
-    //     ctx.moveTo(x1, x2);
-    //     ctx.lineTo(x2 + dx, y2 + dy);
-    //     ctx.stroke();
-    //     x1 = x2 + dx;
-    //     y1 = y2 + dy;
-    //     deltx = -deltx;
-    //     //i += 1;
-    //   }
-    // };
-    //===================
+    resultM.textContent=`${massRange.value} kg`;
+    massRange.addEventListener('input',(e)=>{
+      m=+e.target.value
+      resultM.textContent= `${e.target.value} kg`
+      console.log(m)
+      draw();
+
+    })
+    stiffnessRange.addEventListener('input',(e)=>{
+      k=e.target.value*0.01
+      console.log(k)
+      draw();
+    })
+
+    stopBtn.addEventListener('click',()=>{
+      if (StopBtnUnactive) {
+        stopBtn.textContent = "RESTART"
+        StopBtnUnactive = false
+      } else {
+        accBobX =0;
+        velBobX = 0 ;
+        BobX = centerCanvas.x+restLenSpr;
+        ms=0;
+        sec=0;
+        min=0;
+        timeWind.textContent = '00:00:00'
+        stopBtn.textContent = "STOP";
+        draw();
+        StopBtnUnactive = true;
+      }
+    })
+
+    let stringClock ='';
+    const stopWatch = function() {
+      ms+=1/0.6
+      parseInt(ms)
+      if (ms>=100) {
+        sec++;
+        ms=0;
+      }
+
+      if (sec/60===1) {
+        min++;
+        sec=0;
+      }
+      stringClock= `${min<10?'0' + min:min}:${sec<10?'0' + sec:sec}:${ms<10 ?'0' + parseInt(ms):parseInt(ms)}`;
+      console.log(stringClock);
+      timeWind.textContent = stringClock;
+
+
+    }
+
+    //Objects
+    const springCoil = new SpringCoil(AnchorX-150,AnchorY-15,20,r/2);
+    const bob = new Bob();
     const draw = function () {
         ctx.clearRect(0, 0, innerWidth, innerHeight);
         // c2d.fillRect(575, 100, 50, 50);
+        springCoil.draw(ctx,BobX-m,k*100);
         ctx.beginPath();
-        ctx.arc(AnchorX, AnchorY, 5, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "#000";
-        ctx.fill();
-        ctx.moveTo(AnchorX, AnchorY);
-        ctx.lineTo(BobX, BobY);
+        ctx.moveTo(AnchorX+200,AnchorY-60);
+        ctx.lineTo(AnchorX+200,AnchorY+60);
+        ctx.strokeStyle="#bebebe"
+        ctx.lineWidth = 1;
         ctx.stroke();
+        ctx.beginPath();
+        ctx.rect(centerCanvas.x-150,centerCanvas.y+50,-50,-100);
+        ctx.fillStyle='#808080'
+        ctx.fill();
+        ctx.strokeStyle="#000"
+        ctx.stroke()
         // spring(AnchorX, AnchorY, 20, BobY);
-        ctx.beginPath();
+        
         //ctx.moveTo(BobX, BobY - r);
-        ctx.arc(BobX, BobY, r, -Math.PI / 2, 2 * Math.PI + Math.PI / 2, false);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.stroke();
+        bob.x =BobX;
+        bob.y=BobY;
+        bob.draw(ctx,m+20);
+
+
+        
+        
     };
     //===========
     const animate = function () {
-        if (animCross[2]) {
+        if (animCross[2] && StopBtnUnactive) {
         requestAnimationFrame(animate);
-        l = Math.sqrt(
-            (BobX - AnchorX) * (BobX - AnchorX) +
-            (BobY - AnchorY) * (BobY - AnchorY)
-        );
+        l = Math.abs(BobX - AnchorX);
+        console.log('l='+ l)
         x = l - restLenSpr;
-        ang = Math.atan2(BobX - AnchorX, BobY - AnchorY);
-        console.log(`Asin=${(ang * 180) / Math.PI}`);
+        console.log('x='+ x)
+        //ang = Math.atan2(BobX - AnchorX, BobY - AnchorY);
+        //console.log(`Asin=${(ang * 180) / Math.PI}`);
         //ang = Math.acos((BobY - AnchorY) / l);
         //console.log(`Acos=${(angY * 180) / Math.PI}`);
-        console.log(`L=${l}`);
-        accBobX = (-k / m) * x * Math.sin(ang);
-        accBobY = g - (k / m) * x * Math.cos(ang);
+        //console.log(`L=${l}`);
+        accBobX = -(k * x / m)  ;
 
-        velBobX += accBobX / 5;
-        velBobY += accBobY / 5;
+        velBobX += accBobX ;
 
-        BobX += velBobX / 5;
-        BobY += velBobY / 5;
+        BobX += velBobX ;
         velBobX *= damp;
-        velBobY *= damp;
+        stopWatch();
         draw();
         }
     };
@@ -115,13 +157,13 @@ const thrdPend = () => {
     draw();
     canvas.addEventListener("mousedown", function (event) {
         pressing = true;
-        clickedCircle(event.x, event.y);
+        //clickedCircle(event.x);
     });
     canvas.addEventListener("mousemove", function (ev) {
-        clickedCircle(ev.x, ev.y);
+        //clickedCircle(ev.x);
         if (pressing && animCross[2]) {
         BobX = ev.x;
-        BobY = ev.y;
+        console.log(BobX,AnchorX,restLenSpr)
 
         draw();
         }

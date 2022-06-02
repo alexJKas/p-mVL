@@ -15,12 +15,17 @@ const generalFunc= () => {
 
 
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight + 143;
+    canvas.height = window.innerHeight;
     
     closeCross.addEventListener("click", function () {
       canvasArea.style.display = "none";
-      const settingWind = document.querySelector('.setingsWindowPend1');
-      settingWind.style.display='none';
+      const settingWind1 = document.querySelector('.pendlm1');
+      const settingWind2 = document.querySelector('.pendlm2');
+      const settingWind3 = document.querySelector('.pendlm3');
+
+      settingWind1.style.display='none';
+      settingWind2.style.display='none';
+      settingWind3.style.display='none';
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       animCross = animCross.fill(false, 0);
     });

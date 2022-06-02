@@ -3,20 +3,30 @@ import Bob from './components/Bob.js'
 import Rod from './components/Rod.js';
 import fixedPoint from './components/fixedPoint.js'
 
-const {canvas, ctx, canvasArea,animCross} = dataObj
+const {canvas, ctx, canvasArea,animCross,centerCanvas} = dataObj
 const secPend = () => {
     const secondPend = document.querySelector(".second-pendulum");
+    const settingWind2 = document.querySelector('.pendlm2');
+    const lengthRange1  =document.getElementById('lengthRange1')
+    const lengthRange2 =document.getElementById('lengthRange2')
+    const massRange1 =document.getElementById('massRange1')
+    const  massRange2=document.getElementById('massRange2')
+    const resultL1 =document.querySelector('.resultL1')
+    const resultL2 =document.querySelector('.resultL2')
+    const resultM1 =document.querySelector('.resultM1')
+    const resultM2 =document.querySelector('.resultM2')
     secondPend.addEventListener("click", function () {
     canvasArea.style.display = "block";
+    settingWind2.style.display='flex';
     animCross[1] = true;
     //------------------
     console.log(ctx);
-    const l1 = 200;
-    const l2 = 200;
-    const x0 = canvas.width/2;
-    const y0= canvas.height/2-l1-l2/2;
-    const m1 = 15;
-    const m2 = 15;
+    let l1 = 200;
+    let l2 = 200;
+    const x0 = centerCanvas.x;
+    const y0= centerCanvas.y-l1-l2/2;
+    let m1 = 15;
+    let m2 = 15;
     let ang1 = 0;
     let ang2 = 0;
     let a1V = 0;
@@ -24,13 +34,48 @@ const secPend = () => {
     let a1A = 0;
     let a2A = 0;
     const g = 1;
-    const damp1 = 0.999;
-    const damp2 = 0.999;
+    const damp1 = 1;
+    const damp2 = 1;
     let pressing;
     let color1 = "red";
     let color2 = "red";
     let isPointedBob = [false, false];
     let choosedBob = [false, false];
+
+    resultL1.textContent=`${Math.round(lengthRange1.value*0.02645833)} cm`;
+    lengthRange1.addEventListener('input',(e)=>{
+      l1=+e.target.value
+      resultL1.textContent= `${Math.round(e.target.value*0.02645833)} cm`
+      draw();
+
+    })
+
+    resultL2.textContent=`${Math.round(lengthRange2.value*0.02645833)} cm`;
+    lengthRange2.addEventListener('input',(e)=>{
+      l2=+e.target.value
+      resultL2.textContent= `${Math.round(e.target.value*0.02645833)} cm`
+      draw();
+
+    })
+
+
+    resultM1.textContent=`${massRange1.value} kg`;
+    massRange1.addEventListener('input',(e)=>{
+      m1=+e.target.value
+      console.log(m1)
+      resultM1.textContent= `${e.target.value} kg`
+      draw();
+
+    })
+
+    resultM2.textContent=`${massRange2.value} kg`;
+    massRange2.addEventListener('input',(e)=>{
+      m2=+e.target.value
+      resultM2.textContent= `${e.target.value} kg`
+      draw();
+
+    })
+
     const getAng1AccPart = function (ang1, ang2, a1V, a2V) {
         let prt1_1 = -g * (2 * m1 + m2) * Math.sin(ang1);
         let prt1_2 = -m2 * g * Math.sin(ang1 - 2 * ang2);
@@ -53,8 +98,10 @@ const secPend = () => {
     const ancor = new fixedPoint(x0,y0);
     const rod1 = new Rod(ancor.x,ancor.y);
     const rod2 = new Rod(0,0)
-    const bob1 = new Bob(15,m1);
-    const bob2 = new Bob(15,m2);
+    const bob1 = new Bob();
+    const bob2 = new Bob();
+
+
     const draw = function () {
         ctx.clearRect(0, 0, innerWidth, innerHeight);
         ancor.draw(ctx)
@@ -80,8 +127,8 @@ const secPend = () => {
         rod2.draw(ctx)
         //============
         //===========
-        bob1.draw(ctx);
-        bob2.draw(ctx);
+        bob1.draw(ctx, m1);
+        bob2.draw(ctx, m2);
     };
     draw();
     let arrExpr1;
